@@ -220,7 +220,7 @@
 
             // icon
             var ganpati_icon = L.icon({
-                iconUrl: `/assets/images/${ganpati.images[0]}`,
+                iconUrl: `${ganpati.images[0]}`,
                 iconSize: [38, 38],
             });
 
@@ -229,7 +229,7 @@
                 <div class="card">
                 <div class="card-title">${ganpati.name}</div>
                 <div class="card-address"> ${ganpati.address}</div>
-                <div class="card-image"><img src="/assets/images/${ganpati.images[1]}" width="150px" height="150px" alt=""></div>
+                <div class="card-image"><img src="${ganpati.images[1]}" width="150px" height="150px" alt=""></div>
                 <div class="card-history"><b>History:</b> ${ganpati.history}</div>
                 <div class="card-pooja"><b>Pooja Timings:</b> 
             `;
