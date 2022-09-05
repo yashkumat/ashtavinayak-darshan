@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashtavinayak Darshan</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+   integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+   crossorigin=""/>
+
+   <!-- Leaflet Routing CSS -->
+   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
+   <!-- Custom CSS -->
+   <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        #map{ 
+            height: 100vh; 
+        }
+        .card{
+            display: flex;
+            flex-direction: column;
+        }
+        .card div{
+            margin: 5px;
+        }
+        .card-title{
+            font-size: 25px;
+        }
+        .card-address{
+            font-size: 15px;
+        }
+        .card-history{
+            text-align: justify;
+        }
+        .about-item{
+            margin-left: 20px;
+        }
+        .card-image{
+            align-self: center;
+        }
+        .get_direction{
+            align-self: center;
+        }
+        .get_direction_btn{
+            background: black;
+            color: white;
+            border: none;
+            padding: 5px 10px 5px 10px;
+            border-radius: 5px;
+        }
+   </style>
+</head>
+<body>
+    <!-- Map -->
+    <div id="map"></div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+   integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+   crossorigin=""></script>
+   
+   <!-- Leaflet Routing JS -->
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+
+        // Initiate Map
+        var map = L.map('map').setView([18.8, 73.9], 10);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Get Direction
+        function get_direction(lat, long){
+            
+            navigator.geolocation.getCurrentPosition(
+            
+            function (position) {
+
+                var rounting_control = L.Routing.control({
+                    waypoints:   [
+                        L.latLng(lat, long),
+                        L.latLng(position.coords.latitude, position.coords.longitude)
+                    ],
+                    routeWhileDragging: true,
+                }).addTo(map);
+
+                map.closePopup();
+
+            },
+            function (error) {
+                    console.log("The Locator was denied. :(")
+            })
+
+        }
+
+        // Change Zoom level depending on screen size
+        window.addEventListener('load', function(event){
+            var width = document.documentElement.clientWidth;
+            if (width < 500) {
+                map.setZoom(8);
+                rounting_control.hide();
+            } 
+            if(width > 500 && width<900){
+                map.setZoom(9);
+            }
+            if(width > 900){
+                map.setZoom(10);
+            }
+        });
+        
+        // Ashtavinayak Data
+        var ashtavinayak = [
+            {
+                id: "1",
+                cap: "mayureshwar",
+                name: "Shree Mayureshwar Temple",
+                images: ['mayureshwar.png', 'mayureshwar_1.png'],
+                address: "Moragaon, Pune District ( About 70 KM from pune)",
+                history: "According to Ganesha Purana, Lord Ganesha incarnated as Mayureshwar who had six arms and a white complexion. He was born for the purpose of killing the demon named Sindhu. The Lord came down on a peacock mount and defeated him.",
+                pooja: [ '7 AM', '12 PM', '8 PM'],
+                statue: 'Murti have diamond eyes and naval, snake on head. Right trunk',
+                things_to_do : 'Visit Bhairav temple near main temple.',
+                coordinates: [18.367804305671378, 74.31550516461833]
+            },
+            {
+                id: "2",
+                cap: "siddhivinayak",
+                name: "Shree Siddhivinayak Temple",
+                images: ['siddhivinayak.png', 'siddhivinayak_1.png'],
+                address: "Siddhatek, Karjat Taluka, Ahemadnagar District ( About 100 KM from pune)",
+                history: "The original temple is believed to be built by Vishnu, however it was destroyed over time. Later, a cowherd is believed to have had a vision of the ancient temple and found the icon of Siddhi-vinayaka. The cowherd worshipped the deity and soon others learned of the shrine",
+                pooja: [ '7 AM', '12 PM', '8 PM'],
+                statue: 'Right leg little up. ridhi-siddhi is belived to sit on it. Right trunk',
+                things_to_do : 'Visit Shree Hari Vishnu Mandir - statue with eyes of moti.',
+                coordinates: [18.44526657348314, 74.72630451690769]
+            },
+            {
+                id: "3",
+                cap: "balaleshwar",
+                name: "Shree Ballaleshwar Temple",
+                images: ['balaleshwar.png', 'balaleshwar_1.png'],
+                address: "Pali, Raigad District ( About 100 KM from Mumbai)",
+                history: "Kalyansheth's son Ballal and his friends kept one large stone and worshipped it as Lord Ganesh. Irritated villagers who complained to Kalyansheth came to the Pooja and destroyed the stone. Ballal Cried and prayed to lord who appeared as sadhu. Ballal identified lord, Lord Ganesh embraced Ballal and vanished into a stone. This stone became the Lord Ballaleshwar idol.",
+                pooja: [ '5:30 AM', '7 AM', '12 PM', '8 PM'],
+                statue: 'Panchdhatu Bell gifted by peshva on victory of Vasai fort. Silver Rat in front of idol. Sun beam fall directly on idol.',
+                things_to_do : 'The large stone which Ballal`s father Kalyansheth threw to the ground was known as Dhundi Vinayak. This is believed to be self-manifested or Swayambu and is worshipped before Lord Ballaleshwar.',
+                coordinates: [18.535617822936082, 73.2235450014003]
+            },
+            {
+                id: "4",
+                cap: "varadvinayak",
+                name: "Shree Varadvinayak Temple",
+                images: ['varadvinayak.png', 'varadvinayak_1.png'],
+                address: "Mahad, Raigad District ( About 90 KM from Pune)",
+                history: "One of the Rishis refused to debate with Gritsamada as he was not a true Brahmin. A surprised Gritsamada questioned his mother and learned that he was Lord Indra’s son. In a fit of anger, he cursed that she will turn into a thorny plant. A repenting Gritsamada retreated to Pushpak forest and performed penance to Lord Ganesh. Gritsamada requested that he be recognized as a Brahmin and also that Lord Ganesh stay in this forest and bless the people and called Lord Ganesh as the Lord who grants wishes.",
+                pooja: [ '8 AM'],
+                statue: ' In this temple Idol trunk is to the left.',
+                things_to_do : 'A Unique feature of this temple is a lamp that has been burning continuously since 1892. Pond where idol is said to be self originated.',
+                coordinates:[18.813947250593483, 73.30095737716108]
+            },
+            {
+                id: "5",
+                cap: "chintamani",
+                name: "Shree Chintamani Temple",
+                images: ['chintamani.png', 'chintamani_1.png'],
+                address: "Theur, Pune District ( About 30 KM from Pune)",
+                history: "Raja Guna visited Sage Kapila’s ashram, the sage took the help of the precious jewel – Chintamani to serve food to the prince. However, the greedy Ganaraja forcibly took jewel from the Sage. Lord Ganesh defeated Ganaraja under a Kadamba tree, retrieved the precious jewel and took it back to sage Kapila. So, the sage rewarded Lord Ganesh by putting Chintamani around his neck.",
+                pooja: [ '7:30 AM', '12 PM', '10 PM'],
+                statue: 'Chimaji Appa donated a large European bell, which still hangs in the temple. ',
+                things_to_do : 'Peshwa ruler Madhavrao renovated and made additions to the temple structure. Behind the temple is the Peshwa Wada',
+                coordinates: [18.526855403325794, 74.04618603733506]
+            },
+            {
+                id: "6",
+                cap: "lenyadri",
+                name: "Shree Lenyadri Temple",
+                images: ['lenyadri.png', 'lenyadri_1.png'],
+                address: "Lenyadri, Pune District ( About 100 KM from Pune)",
+                history: "Goddess Sati reincarnated as Goddess Parvati wiped her body and used the dirt to create an idol on the Lenyadri mountain. Lord Gajanan entered this idol and stood before her a young boy with six arms and three eyes.  His name was Girija (Parvati) atmaj (son) or the son of Parvati.",
+                pooja: [ '8 AM'],
+                statue: 'Chimaji Appa donated a large European bell, which still hangs in the temple. ',
+                things_to_do : 'Peshwa ruler Madhavrao renovated and made additions to the temple structure. Behind the temple is the Peshwa Wada',
+                coordinates: [19.247965319223834, 73.88800347464301]
+            },
+            {
+                id: "7",
+                cap: "vigneshwar",
+                name: "Shree Vigneshwar Temple",
+                images: ['vigneshwar.png', 'vigneshwar_1.png'],
+                address: "Ozar, Nashik District ( About 20 KM from Nashik)",
+                history: "King Abhinandan had not given an offering to Lord Indra during his Maha Yagna. Angered, Indra sent Kaala in the form of Vignasura. He was defeated by Ganesha and agreed to never be present in places that were blessed by him.",
+                pooja: [ '7:30 AM', '12 PM', '10 PM'],
+                statue: 'The residing idol is Ganesha which is left trunked in the temple',
+                things_to_do : 'The idols of Goddess Siddhi and Goddess Riddhi, along with Ganesha, is adorned with diamonds on their foreheads and emeralds for their eyes.',
+                coordinates: [19.188310273892522, 73.95955893771449]
+            },
+            {
+                id: "8",
+                cap: "mahaganpati",
+                name: "Shree Mahaganapati Temple",
+                images: ['mahaganpati.png', 'mahaganpati_1.png'],
+                address: "Ozar, Nashik District ( About 20 KM from Nashik)",
+                history: "Sage Gritsamad’s son Tripurasur became vain and created chaos in the world. Lord Shiva recited the Sadaakshar Mantra and defeated Tripurasur.",
+                pooja: [ '7:30 AM', '7:30 PM', '10:30 PM'],
+                statue: 'Sun’s rays fall on the idol. Lord Managanapati sits on a lotus',
+                things_to_do : 'Mahotkat idol supposedly has 10 trunks and 20 arms and  is belived to be present below the present idol.',
+                coordinates: [18.753629909237244, 74.240556561106]
+            }
+        ]
+
+        // Create Icon  and Popup and show on map
+        ashtavinayak.forEach(ganpati=>{
+
+            // icon
+            var ganpati_icon = L.icon({
+                iconUrl: `/assets/images/${ganpati.images[0]}`,
+                iconSize: [38, 38],
+            });
+
+            // popup
+            var ganpati_info =  `
+                <div class="card">
+                <div class="card-title">${ganpati.name}</div>
+                <div class="card-address"> ${ganpati.address}</div>
+                <div class="card-image"><img src="/assets/images/${ganpati.images[1]}" width="150px" height="150px" alt=""></div>
+                <div class="card-history"><b>History:</b> ${ganpati.history}</div>
+                <div class="card-pooja"><b>Pooja Timings:</b> 
+            `;
+
+            ganpati.pooja.forEach(poo=>{
+                ganpati_info += poo + ", "
+            })
+
+            ganpati_info += `    
+                </div>
+                <div class="card-statue"><b>About Temple & Statue:</b> </div>
+                <ol class="about-list">
+                    <li class="about-item">${ganpati.statue}</li>
+                    <li class="about-item">${ganpati.things_to_do}</li>
+                </ol>
+                <div class="get_direction"><button class="get_direction_btn" onclick="get_direction(${ganpati.coordinates[0]}, ${ganpati.coordinates[1]})">Get Direction</button></div>
+                </div>
+            `;
+
+            // add to map
+            L.marker(ganpati.coordinates, {icon: ganpati_icon}).bindPopup(ganpati_info).addTo(map);
+        })
+
+    </script>
+</body>
+</html>
